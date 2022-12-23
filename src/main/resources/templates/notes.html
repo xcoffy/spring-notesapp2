@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.com">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes app</title>
+    <link rel="stylesheet" href="https://igoradamenko.github.io/awsm.css/css/awsm.min.css">
+    <style>
+        .Bd {
+            border: solid 1px black;
+        }
+
+        .Bdc\(red\) {
+            border-color: red !important;
+
+        }
+
+        .C\(red\) {
+            color: red;
+        }
+
+        .P\(0\) {
+            padding: 0;
+        }
+
+        .P\(10px\) {
+            padding: 10;
+        }
+
+        .vertical-center {
+            margin: 0;
+            position: absolute;
+            top: 20%;
+            -ms-transform: translateY(-50%);
+            transform: translateY(-50%);
+        }
+
+        .cropped {
+            width: 20px;
+            height: 20px;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <h1 th:if="${message != null}" th:text="${message}"></h1>
+    <dl  th:each="note : ${notes}" class="Bd P(10px)">
+        <dt th:text="${note.title}">...</dt>
+        <div class="cropped">
+            <img th:if="${note.priority} == 2" src="https://media.discordapp.net/attachments/734706486533685268/1049392957607919749/red.png" />
+            <img th:if="${note.priority} == 1" src="https://cdn.discordapp.com/attachments/734706486533685268/1049395918459383879/orange.jpg" />
+            <img th:if="${note.priority} == 0" src="https://cdn.discordapp.com/attachments/734706486533685268/1049395918740398110/yellow.png" />
+        </div>
+        <dd>
+            <ul class="P(0)">
+                <li th:text="${note.description}"></li>
+            </ul>
+        </dd>
+        <a th:href="@{/notes/{id}(id=${note.id})}">Delete</a>
+
+    </dl>
+<dl>
+    <form action="#" th:action="@{/notes}" th:object="${note}" method="post">
+        <table>
+            <tr>
+                <label> Title
+                    <input type="text" field="*{title}" name="title">
+                </label>
+                <label> Description
+                    <input type="text" field="*{description}" name="description">
+                </label>
+                <label> Priority
+                    <input type="range" min="0" max="2" field="*{priority}" name="priority">
+                </label>
+                <p>
+                    <button type="submit">Add</button>
+                    <button type="reset">Clear</button>
+                </p>
+            </tr>
+        </table>
+    </form>
+
+</dl>
+</main>
+<div class="vertical-center">
+    <form action="http://localhost:8080">
+        <input type="submit" value="Menu" />
+    </form>
+    <a href="http://localhost:8080/notes?sort=date"  target="_self">date</a>
+    <a href="http://localhost:8080/notes?sort=title"  target="_self">title</a>
+    <a href="http://localhost:8080/notes?sort=priority"  target="_self">priority</a>
+</div>
+</body>
+</html>
